@@ -116,12 +116,13 @@ public class OrderService {
     public List<OrderOut> findAllWithDetails(String idAccount) {
         var list = orderRepository.findAllByIdAccount(idAccount);
         return list.stream()
-            .map(om -> OrderOut.builder()
-                .id(om.getId())
-                .date(om.getDate().toString())
-                .items(null) // lista resumida
-                .total(om.getTotal())
-                .build())
+            .map(om -> {
+                List<ProductOut> products = om.getItems().stream()
+                    .map(it -> productController.findById(it.getIdProduct()).getBody())
+                    .toList();
+                
+                return OrderParser.toOut(om, products);
+            })
             .toList();
     }
 
@@ -129,7 +130,6 @@ public class OrderService {
         OrderModel om = orderRepository.findByIdAndIdAccount(id, idAccount)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
 
-        // carrega os produtos dos itens desse pedido
         List<ProductOut> products = om.getItems().stream()
             .map(it -> productController.findById(it.getIdProduct()).getBody())
             .toList();
