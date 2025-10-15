@@ -8,7 +8,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Component
-public class FeignAuthInterceptor {
+public class FeignAuth {
 
   @Bean
   public RequestInterceptor forwardAuthHeader() {
