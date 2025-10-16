@@ -15,7 +15,7 @@ public class OrderResource implements OrderController {
 
     @Override
     public ResponseEntity<OrderOut> create(OrderIn in) {
-        String idAccount = CurrentRequest.idAccount();
+        String idAccount = OrderRequest.idAccount();
         OrderOut out = orderService.createWithDetails(in, idAccount);
         return ResponseEntity.created(
             ServletUriComponentsBuilder.fromCurrentRequest()
@@ -27,13 +27,13 @@ public class OrderResource implements OrderController {
 
     @Override
     public ResponseEntity<List<OrderOut>> findAll() {
-        String idAccount = CurrentRequest.idAccount();
+        String idAccount = OrderRequest.idAccount();
         return ResponseEntity.ok(orderService.findAllWithDetails(idAccount));
     }
 
     @Override
     public ResponseEntity<OrderOut> findById(String id) {
-        String idAccount = CurrentRequest.idAccount();
+        String idAccount = OrderRequest.idAccount();
         return ResponseEntity.ok(orderService.findByIdWithDetails(id, idAccount));
     }
 }
