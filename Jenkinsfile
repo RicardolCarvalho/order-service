@@ -38,8 +38,8 @@ pipeline {
                     string(credentialsId: 'aws-region', variable: 'AWS_REGION'),
                     string(credentialsId: 'eks-cluster-name', variable: 'CLUSTER_NAME')
                 ]) {
-                    sh "aws eks update-kubeconfig --region \${AWS_REGION} --name \${CLUSTER_NAME}"
-                    sh "kubectl set image deployment/${env.SERVICE} ${env.SERVICE}=${env.NAME}:\${env.BUILD_ID} -n default"
+                    sh "aws eks update-kubeconfig --region ${AWS_REGION} --name ${CLUSTER_NAME}"
+                    sh "kubectl set image deployment/${env.SERVICE} ${env.SERVICE}=${env.NAME}:${env.BUILD_ID} -n default"
                     sh "kubectl rollout status deployment/${env.SERVICE} -n default"
                 }
             }
